@@ -1,0 +1,16 @@
+{
+  "name": "Budapeszt, na dwoje",
+  "short_name": "Budapeszt",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5efe3",
+  "theme_color": "#173c36",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

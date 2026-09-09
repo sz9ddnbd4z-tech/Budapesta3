@@ -1,10 +1,28 @@
-const C='budapeszt-v14';
-const SHELL=['./','./index.html','./app-v8.html?v=20260909a','./app-v5.html?v=20260908g','./fix-ios.js?v=20260909a','./content-v2.js?v=20260909a','./manifest.webmanifest','./icon-180.png','./icon.svg'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{
- if(e.request.method!=='GET')return;
- const u=new URL(e.request.url),local=u.origin===self.location.origin,html=u.pathname.endsWith('.html')||u.pathname.endsWith('/')||u.pathname.endsWith('sw.js')||u.pathname.endsWith('.js')||u.pathname.endsWith('.webmanifest');
- if(local&&html){e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{const c=r.clone();caches.open(C).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match('./'))));return}
- e.respondWith(fetch(e.request).then(r=>{if(r.ok||r.type==='opaque'){const c=r.clone();caches.open(C).then(x=>x.put(e.request,c))}return r}).catch(()=>caches.match(e.request)));
+const CACHE_NAME='budapeszt-v15';
+const APP_SHELL=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon.svg'];
+
+self.addEventListener('install',event=>{
+  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
+});
+
+self.addEventListener('activate',event=>{
+  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
+});
+
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET')return;
+  const url=new URL(event.request.url);
+  if(url.origin!==self.location.origin)return;
+  if(event.request.mode==='navigate'){
+    event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{
+      const copy=response.clone();
+      caches.open(CACHE_NAME).then(cache=>cache.put('./index.html',copy));
+      return response;
+    }).catch(()=>caches.match('./index.html').then(response=>response||caches.match('./'))));
+    return;
+  }
+  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{
+    if(response.ok){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));}
+    return response;
+  })));
 });

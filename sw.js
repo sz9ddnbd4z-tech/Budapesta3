@@ -1,4 +1,4 @@
-const CACHE_NAME='budapeszt-v17-ten-words';
+const CACHE_NAME='budapeszt-v18-final-reveal';
 const APP_SHELL=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon.svg','./story.js','./story.css'];
 
 self.addEventListener('install',event=>{

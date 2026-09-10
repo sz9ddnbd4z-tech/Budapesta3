@@ -1,9 +1,10 @@
-const CACHE_NAME='budapeszt-v20-stable-countdown';
+const CACHE_NAME='budapeszt-v21-single-countdown';
 const APP_SHELL=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon.svg','./story.css'];
 
 const COUNTDOWN_HOTFIX=`
 function showExactDemoGate(){
   clearInterval(window.__demoTimer);
+  try{clearInterval(gateTimer);gateTimer=null}catch(e){}
   const gate=document.getElementById('gate');
   document.getElementById('game').hidden=true;
   gate.hidden=false;
@@ -19,6 +20,7 @@ function showExactDemoGate(){
       return;
     }
     clearInterval(window.__demoTimer);
+    try{clearInterval(gateTimer);gateTimer=null}catch(e){}
     renderPrologue();
   };
   document.getElementById('trip-enter').onclick=check;
@@ -30,6 +32,12 @@ function showExactDemoGate(){
     el.textContent=left>0?demoClock(left):'TERAZ';
   },1000);
 }
+const __budapestInstallRuntimeOverrides=installRuntimeOverrides;
+installRuntimeOverrides=function(){
+  try{clearInterval(gateTimer);gateTimer=null}catch(e){}
+  __budapestInstallRuntimeOverrides();
+  try{clearInterval(gateTimer);gateTimer=null}catch(e){}
+};
 `;
 
 self.addEventListener('install',event=>{

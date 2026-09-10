@@ -1,0 +1,46 @@
+name: Update airport route instructions
+on:
+  push:
+    paths:
+      - '.github/workflows/update-airport-route.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch airport route copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('story.js')
+          s=p.read_text()
+
+          old="{ey:'LOTNISKO BUDAPESZT',title:'🚌 100E → Kálvin tér',body:'Po wyjściu z hali przylotów szukamy przystanku 100E na poziomie przylotów, między terminalami.',fact:'Kup bilet Airport shuttle bus single ticket za 2500 HUF. Najprościej: kartą w Pay&GO w autobusie albo wcześniej w BudapestGO. Jedziemy 100E do Kálvin tér.',route:true,action:'Jesteśmy na Kálvin tér →'},"
+          new="{ey:'LOTNISKO BUDAPESZT',title:'🚌 Najpierw łapiemy 100E',body:'1. Po wyjściu z samolotu idziemy przez odbiór bagażu do hali przylotów Terminala 2. 2. Wychodzimy z budynku przed terminal. 3. Szukamy oznaczenia 100E Airport Express — przystanek jest przed Terminalem 2, między częścią 2A i 2B. 4. Wsiadamy w 100E w stronę centrum i jedziemy do Kálvin tér.',fact:'Na 100E potrzebny jest osobny Airport shuttle bus single ticket za 2500 HUF. Można zapłacić kartą przez Pay&GO w autobusie albo kupić bilet wcześniej w BudapestGO.',route:true,apple:true,action:'Jesteśmy na Kálvin tér →'},"
+          if old not in s:
+              raise SystemExit('airport step not found')
+          s=s.replace(old,new,1)
+
+          old="{ey:'KÁLVIN TÉR',title:'🚇 M4 → Szent Gellért tér',body:'Po wyjściu z 100E schodzimy do metra M4. Jedziemy jeden przystanek w stronę Kelenföld vasútállomás.',fact:'Na M4 potrzebny jest zwykły bilet BKK — 500 HUF. Można kupić/aktywować go w BudapestGO albo skorzystać z Pay&GO przy wejściu do metra.',route:true,action:'Jesteśmy przy Gellércie →'},"
+          new="{ey:'KÁLVIN TÉR · PRZESIADKA',title:'🚇 Teraz M4',body:'1. Wysiadamy z 100E na Kálvin tér. 2. Schodzimy do metra i szukamy zielonej linii M4. 3. Wybieramy kierunek Kelenföld vasútállomás. 4. Jedziemy jeden przystanek i wysiadamy na Szent Gellért tér – Műegyetem.',fact:'To właśnie tutaj jest przesiadka: 100E → M4. Na metro potrzebny jest zwykły bilet BKK.',route:true,apple:true,action:'Jesteśmy przy Gellércie →'},"
+          if old not in s:
+              raise SystemExit('kalvin step not found')
+          s=s.replace(old,new,1)
+
+          old="${s.route?'<div class=\"prologue-actions\"><a href=\"https://go.bkk.hu\" target=\"_blank\" rel=\"noopener\">Otwórz BudapestGO / planer BKK</a></div>':''}"
+          new="${s.route?'<div class=\"prologue-actions\"><a href=\"https://go.bkk.hu\" target=\"_blank\" rel=\"noopener\">Otwórz BudapestGO / planer BKK</a>'+(s.apple?'<a href=\"https://maps.apple.com/?saddr=Budapest%20Ferenc%20Liszt%20International%20Airport&daddr=Kalmar%20Panzio%20Budapest&dirflg=r\" target=\"_blank\" rel=\"noopener\"> Prowadź w Apple Maps</a>':'')+'</div>':''}"
+          if old not in s:
+              raise SystemExit('route actions block not found')
+          s=s.replace(old,new,1)
+
+          p.write_text(s)
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add story.js
+          git commit -m 'Improve airport to Kalmar route instructions' || exit 0
+          git push

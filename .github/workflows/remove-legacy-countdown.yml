@@ -1,0 +1,38 @@
+name: Remove legacy countdown
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-legacy-countdown.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove old countdown from index
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old="function showCountdown(){const gate=document.getElementById('gate');const paint=()=>{const remaining=START_AT-Date.now();if(remaining<=0){showRules();return}gate.hidden=false;gate.innerHTML='<div class=\"gatecard\"><div class=\"ey\">PIĄTEK · 11 WRZEŚNIA 2026</div><h1>Budapeszt,<br><em>na dwoje</em></h1><p>Gra odblokuje się dokładnie o 18:00 czasu Budapesztu. Do tego momentu miasto jeszcze czeka.</p><div class=\"count\">'+clock(remaining)+'</div><p>Najpierw odliczanie. Potem mapa bez spoilerów. Dopiero później plan.</p><button class=\"startgame\" type=\"button\" onclick=\"showRules()\">⚙️ Tryb roboczy — pomiń odliczanie</button></div>'};paint();gateTimer=setInterval(paint,1000)}"
+          if old not in s:
+              raise SystemExit('legacy showCountdown not found')
+          s=s.replace(old,'')
+          old2="function initGate(){if(Date.now()<START_AT)showCountdown();else showRules()}"
+          if old2 not in s:
+              raise SystemExit('legacy initGate not found')
+          s=s.replace(old2,'')
+          if 'storyInit();initGate();' not in s:
+              raise SystemExit('legacy initGate call not found')
+          s=s.replace('storyInit();initGate();','storyInit();')
+          p.write_text(s)
+          PY
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove legacy countdown from index' || exit 0
+          git push

@@ -1,0 +1,37 @@
+
+/* Keep the story reachable without covering the current mission on small screens. */
+.game-live{padding-bottom:65px}
+.game-live .sticky-story{position:sticky;top:0;z-index:20;background:var(--bg);box-shadow:0 5px 14px #173c3615}
+.game-live .sticky-story .tabs{position:static;box-shadow:none}
+.history{background:var(--p);border:1px solid var(--l);border-radius:13px;margin-bottom:12px}
+.history summary{min-height:48px;padding:13px;font-weight:850;cursor:pointer}
+#clue-count{float:right;font-variant-numeric:tabular-nums}
+.history-body{padding:0 13px 13px;max-height:38vh;max-height:38dvh;overflow-y:auto;overscroll-behavior:contain}
+.history-body p{font-size:13px;line-height:1.4}
+.clue-row{margin:12px 0}
+.clue-row label,.postcard>label{display:block;font-size:13px;font-weight:800;margin-bottom:5px}
+.clue-row input,.postcard textarea{width:100%;min-height:46px;font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:10px;border:1px solid var(--l);border-radius:9px;background:white;color:var(--g)}
+.clue-row input:disabled{opacity:1;color:#716c62;background:#eee8dc}
+.clue-callout,.story-context{margin-top:14px;padding:12px;background:#eee3d1;border-radius:12px;overflow-wrap:anywhere;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.story-context:empty{display:none}
+.clue-callout p{margin:0 0 8px}
+.clue-callout .btn{width:100%}
+.postcard{padding:20px;background:var(--p);border:1px solid var(--l);border-radius:20px;margin:14px 0}
+.postcard h2{margin-top:0}
+.postcard textarea{min-height:230px;resize:vertical}
+.postcard-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.postcard-actions .btn{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
+.save-error{color:#a12a21;font-weight:800}
+.next-day{display:block;width:100%;margin-top:12px}
+.game-live .stop{scroll-margin-top:140px}
+.game-live .toast{z-index:1100;bottom:calc(115px + env(safe-area-inset-bottom));max-width:calc(100vw - 24px)}
+.game-live .modal{z-index:1200}
+.game-live .modalbox{max-height:80vh;overflow:auto}
+button,a,input,summary{touch-action:manipulation}
+:focus-visible{outline:3px solid #b56c45;outline-offset:3px}
+
+
+html{scroll-padding-bottom:calc(130px + env(safe-area-inset-bottom))}
+
+.postcard-actions .btn,.clue-callout .btn,.next-day,#retry-history{font:800 15px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.postcard-actions a.btn{color:var(--g);-webkit-text-fill-color:var(--g)}

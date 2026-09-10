@@ -1,4 +1,4 @@
-const CACHE_NAME='budapeszt-v18-final-reveal';
+const CACHE_NAME='budapeszt-v19-password-prologue';
 const APP_SHELL=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon.svg','./story.js','./story.css'];
 
 self.addEventListener('install',event=>{
@@ -21,8 +21,8 @@ self.addEventListener('fetch',event=>{
     }).catch(()=>caches.match('./index.html').then(response=>response||caches.match('./'))));
     return;
   }
-  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{
+  event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{
     if(response.ok){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));}
     return response;
-  })));
+  }).catch(()=>caches.match(event.request)));
 });

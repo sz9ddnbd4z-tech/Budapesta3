@@ -1,0 +1,12 @@
+name = "homescout-api"
+main = "worker.js"
+compatibility_date = "2026-10-28"
+
+[vars]
+NOTION_DATA_SOURCE_ID = "1616d3a7-735d-4361-839c-73cad6fbc0c9"
+# Set to the exact deployed frontend origin, e.g. https://your-site.example
+# ALLOWED_ORIGIN = "https://your-site.example"
+
+# Add secrets through the Cloudflare dashboard or:
+# npx wrangler secret put NOTION_TOKEN
+# npx wrangler secret put SITE_KEY

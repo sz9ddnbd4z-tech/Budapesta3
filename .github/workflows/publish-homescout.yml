@@ -1,0 +1,37 @@
+name: Publish HomeScout on GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'homescout/**'
+      - '.github/workflows/publish-homescout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload complete repository (keep other pages intact)
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Deploy
+        id: deploy
+        uses: actions/deploy-pages@v4

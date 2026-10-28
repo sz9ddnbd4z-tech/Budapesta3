@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f3ee">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f3ee"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="./icon.svg">
 <title>HomeScout · Nasze miejsca w Gdańsku</title><meta name="description" content="HomeScout: prywatna kolekcja mieszkań, porównanie, decyzje i synchronizacja z Notion.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -127,4 +127,4 @@ $('#modal-root').addEventListener('click',e=>{if(e.target.id==='overlay'||e.targ
 <section class="bottom-note"><div><span class="overline">WAŻNE</span><h3>Decyzje na dobrych danych.</h3></div><p>Ceny i statusy pochodzą z zebranych ogłoszeń i wymagają ponownego sprawdzenia. Rezerwacje pozostają w kolekcji. Zdjęcia pojawiają się wyłącznie wtedy, gdy są przypisane do konkretnego mieszkania.</p><a href="https://app.notion.com/p/5eeee76f8c114981946697a75ab0ce91" target="_blank" rel="noopener noreferrer">Baza ofert w Notion ↗</a></section>
 </main><footer><strong>home<span>scout.</span></strong><small>GDANSK · 2026</small><small id="footer-version">v2 · baza Notion / offline snapshot</small></footer></div>
 <div id="modal-root"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
-</body></html>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script></body></html>

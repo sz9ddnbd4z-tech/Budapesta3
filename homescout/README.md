@@ -6,7 +6,7 @@
 
 - Wdrożenie GitHub Pages: workflow `.github/workflows/publish-homescout.yml`
 - Jeden responsywny widok na komputer i iPhone; PWA (manifest, service worker, możliwość dodania ikony)
-- Migawka 10 ofert z bazy Notion (stan na 8 listopada 2026 r.); `Rezerwacja` nie jest usuwana
+- Migawka 11 ofert z bazy Notion (stan na 8 listopada 2026 r.); `Rezerwacja` nie jest usuwana
 - Wspólna opinia i status decyzji: lokale szkice do czasu uruchomienia API
 - Strona jest publiczna; nie umieszczaj na niej prywatnych danych ani tokenów
 
@@ -31,4 +31,5 @@ Sekretów **nigdy nie wpisuj do publicznego HTML, GitHuba ani do wiadomości cza
 ## Źródła i weryfikacja
 
 Dane ofert są historyczne, dlatego dostępność, ceny i fotografie trzeba sprawdzić w ogłoszeniach. Nie używamy losowych zdjęć innych nieruchomości. GitHub Pages publikuje frontend, lecz nie uruchamia backendu Notion. Bez skonfigurowanego Railway widok używa migawki 8 ofert i zapisuje szkice **lokalnie**, co jest wyraźnie komunikowane w interfejsie.
+
 

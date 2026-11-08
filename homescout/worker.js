@@ -16,7 +16,8 @@ const sel=(p,name)=>value(p,name)?.select?.name||'';
 const checkbox=(p,name)=>Boolean(value(p,name)?.checkbox);
 export function mapPage(page){
  const p=page.properties||{},price=num(p,'Cena lokalu PLN')||0, extras=(num(p,'Garaż PLN')||0)+(num(p,'Komórka PLN')||0)+(num(p,'Inne obowiązkowe PLN')||0);
- return {id:page.id,title:title(p['Mieszkanie']),district:t(p['Dzielnica']),address:t(p['Adres']),area:num(p,'Powierzchnia m2')||0,rooms:num(p,'Pokoje')||0,floor:num(p,'Piętro')??0,floors:num(p,'Pięter w budynku')??0,year:num(p,'Rok budowy'),price,extras,total:num(p,'Cena kompletna PLN')??(price+extras),balcony:num(p,'Balkon taras m2'),status:sel(p,'Status ogłoszenia')||'Niezweryfikowane',decision:sel(p,'Status decyzji')||'Nowe',bartek:sel(p,'Ocena Bartek')||'Brak',martyna:sel(p,'Ocena Martyna')||'Brak',noteBartek:t(p['Uwagi Bartek']),noteMartyna:t(p['Uwagi Martyna']),noteTogether:t(p['Opinia wspólna']),plus:t(p['Największy plus']),minus:t(p['Największy minus']),kitchen:t(p['Kuchnia uwagi']),lift:checkbox(p,'Winda'),garage:checkbox(p,'Hala'),storage:checkbox(p,'Komórka'),duplex:checkbox(p,'Dwupoziomowe'),link:p['Link główny']?.url||'',photo:p['Zdjęcie główne URL']?.url||'',notion:page.url||''};
+ const complete=num(p,'Cena kompletna PLN');
+ return {id:page.id,title:title(p['Mieszkanie']),district:t(p['Dzielnica']),address:t(p['Adres']),area:num(p,'Powierzchnia m2')||0,rooms:num(p,'Pokoje')||0,floor:num(p,'Piętro')??0,floors:num(p,'Pięter w budynku'),year:num(p,'Rok budowy'),price,extras,total:complete??(price+extras),complete:complete!==null,balcony:num(p,'Balkon taras m2'),status:sel(p,'Status ogłoszenia')||'Niezweryfikowane',decision:sel(p,'Status decyzji')||'Nowe',bartek:sel(p,'Ocena Bartek')||'Brak',martyna:sel(p,'Ocena Martyna')||'Brak',noteBartek:t(p['Uwagi Bartek']),noteMartyna:t(p['Uwagi Martyna']),noteTogether:t(p['Opinia wspólna']),plus:t(p['Największy plus']),minus:t(p['Największy minus']),kitchen:t(p['Kuchnia uwagi']),lift:checkbox(p,'Winda'),garage:checkbox(p,'Hala'),storage:checkbox(p,'Komórka'),duplex:checkbox(p,'Dwupoziomowe'),link:p['Link główny']?.url||'',photo:p['Zdjęcie główne URL']?.url||'',notion:page.url||''};
 }
 const j=(value,status=200,headers={})=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}});
 function allow(origin,env){const configured=env.ALLOWED_ORIGIN||'';if(configured)return origin===configured?configured:'';return origin||'*';}
@@ -55,3 +56,4 @@ export default {async fetch(req,env){
   return j({error:'Nieznany endpoint'},404,headers);
  }catch(e){return j({error:'Błąd serwera API',detail:String(e.message||e).slice(0,250)},502,headers);}
  }};
+
